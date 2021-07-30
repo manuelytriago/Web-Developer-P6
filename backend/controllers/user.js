@@ -35,6 +35,10 @@ exports.signup = (req, res, next) => {
     
     }
 exports.login = (req, res, next) => {
+    const fs = require('fs');
+fs.unlink('../assets/mayo.jpeg', () => {
+    console.log("ELIMINADO")
+});
     User.findOne({email: req.body.email}).then(
         (user)=> {
         if(!user){

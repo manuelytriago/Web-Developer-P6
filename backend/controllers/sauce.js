@@ -98,7 +98,7 @@ exports.deleteSauce = (req, res, next) => {
         Sauce.findOne({_id: req.params.id}).then(
           (sauce) => {
             const filename = sauce.imageUrl.split('/../../assets/')[1];
-            fs.unlink('/../../assets/'+filename, () => {
+            fs.unlink('../assets/'+filename, () => {
               Sauce.deleteOne({_id: req.params.id}).then(
                 () => {
                   res.status(200).json({

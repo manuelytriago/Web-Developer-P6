@@ -35,8 +35,7 @@ exports.createSauce = (req, res, next) => {
         }
         );
     }
-
-exports.getOneSauce =    (req, res, next) => {
+exports.getOneSauce = (req, res, next) => {
         Sauce.findOne({
             _id: req.params.id
         }).then(
@@ -52,8 +51,7 @@ exports.getOneSauce =    (req, res, next) => {
             }
         );
     }
-
-    exports.modifySauce = (req, res, next) => {
+exports.modifySauce = (req, res, next) => {
         let sauce = new Sauce({ _id: req.params._id });
         if (req.file) {
           const url = req.protocol + '://' + req.get('host');
@@ -73,6 +71,7 @@ exports.getOneSauce =    (req, res, next) => {
             _id: req.params.id,
             name: req.body.name,
             manufacturer: req.body.manufacturer,
+            description: req.body.description,
             //imageUrl: req.body.imageUrl,
             mainPepper: req.body.mainPepper,
             heat: req.body.heat,
@@ -92,8 +91,7 @@ exports.getOneSauce =    (req, res, next) => {
             });
           }
         );
-      };
-    
+    }; 
 exports.deleteSauce = (req, res, next) => {
         Sauce.findOne({_id: req.params.id}).then(
           (sauce) => {
@@ -115,9 +113,8 @@ exports.deleteSauce = (req, res, next) => {
             });
           }
         );
-};
-
-exports.getAllSauce =   (req, res, next) => {
+    };
+exports.getAllSauce = (req, res, next) => {
   Sauce.find().then(
         (sauces) => {
             res.status(200).json(sauces);
@@ -132,15 +129,10 @@ exports.getAllSauce =   (req, res, next) => {
     );
     }
 exports.likeSauce = (req, res, next) => {
-  /*const usersArray = new Sauce({ _id: req.params.id});
-  console.log(req.params.id)
-  console.log("usersArray")
-  console.log(usersArray)
-  console.log("usersLikes")
-  console.log(usersLikes)*/
-
   var userslikes = new Sauce({ _id: req.params.id});
   let sauce = new Sauce({ _id: req.params.id });
+  // Checking if it is like, cancelling or dislikes
+    // Like
       if (req.body.like == 1){
         Sauce.findOne({
           _id: req.params.id
@@ -149,7 +141,7 @@ exports.likeSauce = (req, res, next) => {
             arraylikes = sauces.usersLiked; 
             if (script.exitsUser(arraylikes,req.body.userId) == true ){
             }else{
-            arraylikes = script.checkUser(arraylikes,req.body.userId,'Add')
+            arraylikes = script.modifyArray(arraylikes,req.body.userId,'Add')
             sauce = {
               _id: req.params.id,
               likes: sauces.likes+1,
@@ -179,6 +171,7 @@ exports.likeSauce = (req, res, next) => {
           }
       );
     }
+    // Canceling Like or dislike
       if (req.body.like == 0){
         Sauce.findOne({
           _id: req.params.id
@@ -188,7 +181,7 @@ exports.likeSauce = (req, res, next) => {
             arrayDisliked = sauces.usersDisliked;
             if (script.exitsUser(arraylikes,req.body.userId) == true ){
               arraylikes = sauces.usersLiked;
-              arraylikes = script.checkUser(arraylikes,req.body.userId,'Delete');
+              arraylikes = script.modifyArray(arraylikes,req.body.userId,'Delete');
               sauce = {
                 _id: req.params.id,
                 likes: sauces.likes-1,
@@ -200,7 +193,7 @@ exports.likeSauce = (req, res, next) => {
             }
             if (script.exitsUser(arrayDisliked,req.body.userId) == true ){
             arrayDisliked = sauces.usersDisliked;
-            arrayDisliked = script.checkUser(arrayDisliked,req.body.userId,'Delete');
+            arrayDisliked = script.modifyArray(arrayDisliked,req.body.userId,'Delete');
               sauce = {
                 _id: req.params.id,
                 dislikes: sauces.dislikes-1,
@@ -230,16 +223,15 @@ exports.likeSauce = (req, res, next) => {
                   });
           }
       );
-
-        
       }
+      // Dislike
       if (req.body.like == -1){
         Sauce.findOne({
           _id: req.params.id
         }).then(
           (sauces) => {
         arrayDisliked = sauces.usersDisliked;
-        arrayDisliked = script.checkUser(arrayDisliked,req.body.userId,'Add')
+        arrayDisliked = script.modifyArray(arrayDisliked,req.body.userId,'Add')
         sauce = {
           _id: req.params.id,
           dislikes: sauces.dislikes+1,

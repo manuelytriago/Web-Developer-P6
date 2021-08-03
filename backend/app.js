@@ -1,6 +1,5 @@
 //MONGODB CONNECTION:mongodb+srv://project6:<password>@cluster0.c189u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose =  require('mongoose');

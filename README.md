@@ -15,7 +15,7 @@ The, clone this repo and run `npm install`.
 ## Usage ##
 
 Run `npm start`. This should both run the local server and launch your browser.
-
+Go to backend folder and run: npm run dev
 If your browser fails to launch, or shows a 404 error, navigate your browser to http://localhost:8081.
 
 The app should reload automatically when you make a change to a file.
